@@ -1,3 +1,4 @@
+
 v3.0.2
 - train spell when spell camps (?) are full
 - fix train minions in scripted attack G + M (brutal hard fix, when you want minions 45 be cooking in barrack)
