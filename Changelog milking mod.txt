@@ -1,3 +1,6 @@
+V3.0.3
+-
+
 
 v3.0.2
 - train spell when spell camps (?) are full
