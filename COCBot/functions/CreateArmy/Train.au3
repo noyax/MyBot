@@ -17,6 +17,7 @@ Global $LastDarkBarrackTrainDonatedTroop = 1
 
 Func Train()
 
+;$debugSetlog = 1
 	Local $anotherTroops
 	Local $tempCounter = 0
 	Local $tempElixir = ""
@@ -111,6 +112,17 @@ Func Train()
 
 	checkAttackDisable($iTaBChkIdle) ; Check for Take-A-Break after opening train page
 
+; noyax top, don't waste time before attackink in milking mode
+	If $fullArmy= True And $MilkAtt = 1 And _DateAdd( 'n', $TempoTrain, $skipStartTime ) > _NowCalc() then
+;		If $Musttrain = 0 Then
+			setlog("Don't waste time, go to attack", $COLOR_PURPLE)
+			return
+;		EndIf
+	EndIf
+	$skipStartTime = _NowCalc()
+;noyax bottom
+
+	
 	; CHECK IF NEED TO MAKE TROOPS
 	; Verify the Global variable $TroopName+Comp and return the GUI selected troops by user
 	;
@@ -193,7 +205,7 @@ Func Train()
 		$BarrackDarkStatus[0] = False
 		$BarrackDarkStatus[1] = False
 		SetLog("Your Army Camps are now Full", $COLOR_RED)
-		If $pEnabled = 1 And $ichkAlertPBCampFull = 1 Then PushMsg("CampFull")
+		If ($pEnabled = 1 or $pEnabled2 = 1) And $ichkAlertPBCampFull = 1 Then PushMsg("CampFull"); Noyax => telegram
 	EndIf
 
 	;If is fullArmy or FirstStart or we are using the Barracks modes is not necessary count the donations , the $Cur will add the correct troops to make
@@ -446,7 +458,7 @@ Func Train()
 		While isBarrack()
 			$brrNum += 1
 			_CaptureRegion()
-			If $FirstStart Then
+			If $FirstStart And $MilkAtt = 0 Then ;Noyax don't waste time in first start with milking mode
 				If _Sleep($iDelayTrain2) Then Return
 				$icount = 0
 				If _ColorCheck(_GetPixelColor(187, 212, True), Hex(0xD30005, 6), 10) Then ; check if the existe more then 6 slots troops on train bar

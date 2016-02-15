@@ -1499,5 +1499,7 @@ Func saveConfig() ;Saves the controls settings to the config
 	EndIf
 
 	If $hFile <> -1 Then FileClose($hFile)
+	
+	saveparamMilk()
 
 EndFunc   ;==>saveConfig

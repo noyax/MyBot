@@ -37,8 +37,8 @@ Func BrewSpells()
 			WEnd
 			If isSpellFactory() Then
 				If $LightningSpellComp > 0 Then ; Lightning Spells
-					$TempLightningSpell = Number(getBarracksTroopQuantity(175 + 107 * 0, 296 + $midOffsetY))
-					Local $LightningSpell = $LightningSpellComp - ($CurLightningSpell + $TempLightningSpell)
+					$TempLightningSpell = 0 ; noyax to fix train spell Number(getBarracksTroopQuantity(175 + 107 * 0, 296 + $midOffsetY))
+					Local $LightningSpell = (2 * $LightningSpellComp) - ($CurLightningSpell + $TempLightningSpell)
 					If $debugSetlog = 1 Then SetLog("Making Lightning Spell: " & $LightningSpell)
 					If _sleep($iDelayTrain2) Then Return
 					If $TempLightningSpell = 0 Then
