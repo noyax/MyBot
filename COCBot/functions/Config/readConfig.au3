@@ -618,4 +618,7 @@ Func readConfig() ;Reads config and sets it to the variables
 	Else
 		Return False
 	EndIf
+	
+	readconfigMilk()
+	
 EndFunc   ;==>readConfig

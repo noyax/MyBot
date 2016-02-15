@@ -547,7 +547,7 @@ Global $ArmyComp
 
 ;Spell Settings
 Global $DonPois = 0, $DonEart = 0, $DonHast = 0
-Global $LightningSpellComp = 0, $HealSpellComp = 0, $RageSpellComp = 0, $PoisonSpellComp = 0, $HasteSpellComp = 0
+Global $LightningSpellComp = 0, $HealSpellComp = 0, $RageSpellComp = 0, $PoisonSpellComp = 0, $HasteSpellComp = 0,$EarthSpellComp = 0 ;Noyax add variable
 Global $CurLightningSpell = 0, $CurHealSpell = 0, $CurRageSpell = 0, $CurJumpSpell = 0, $CurFreezeSpell = 0, $CurPoisonSpell = 0, $CurHasteSpell = 0, $CurEarthSpell = 0
 Global $iTotalCountSpell = 0
 Global $TotalSFactory = 0

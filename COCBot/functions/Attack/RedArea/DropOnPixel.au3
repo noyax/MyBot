@@ -46,7 +46,8 @@ Func DropOnPixel($troop, $listArrPixel, $number, $slotsPerEdge = 0)
 					$DeployCCPosition[1] = $pixel[1]
 					debugRedArea("CC : $slotsPerEdge = 1 ")
 				EndIf
-				If IsAttackPage() Then Click($pixel[0], $pixel[1], $number, $iDelayDropOnPixel2, "#0096")
+; noyax decrease time				If IsAttackPage() Then Click($pixel[0], $pixel[1], $number, $iDelayDropOnPixel2, "#0096")
+				If IsAttackPage() Then Click($pixel[0], $pixel[1], $number, 50, "#0096")
 			EndIf
 			If _Sleep($iDelayDropOnPixel1) Then Return
 		Next
