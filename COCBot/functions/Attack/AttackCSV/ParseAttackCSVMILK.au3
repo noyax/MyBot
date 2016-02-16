@@ -100,6 +100,7 @@ Func ParseAttackCSVMILK($value1 = "M", $value2 = 1, $value3 = 6, $value4 = "gobl
 			EndIf
 ; +++++++++++++legion123 new code
 			If ($value1 = "TH") Then
+				THSearch() ; thanks to @LKhjks
 				SetLog("Get Location of TH...")
 				Local $tmpArrayOfPixel[1]
 
