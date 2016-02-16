@@ -1,5 +1,6 @@
 V3.0.3
--
+- Add modif of @LKhjks to attack TH exposed in csv
+- 
 
 
 v3.0.2
