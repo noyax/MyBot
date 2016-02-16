@@ -146,6 +146,9 @@ Func saveparamMilk()
 		IniWrite($configMilk, "TH Snipe", "THsnAttIfDB", 0)
 	EndIf
 	IniWrite($configMilk, "TH Snipe", "THsnPercent", GUICtrlRead($txtAttIfDB))
+
+	IniWrite($configMilk, "troop", "troop5", _GUICtrlComboBox_GetCurSel($cmbBarrack5))
+	IniWrite($configMilk, "troop", "troop6", _GUICtrlComboBox_GetCurSel($cmbBarrack6))  
 	
 EndFunc
 
@@ -175,6 +178,12 @@ Func readconfigMilk()
 ;TH Snipe
 	$iOptAttIfDB = IniRead($configMilk, "TH Snipe", "THsnAttIfDB", "1")
 	$iPercentThsn = IniRead($configMilk, "TH Snipe", "THsnPercent", "10")
+
+		ReDim $barrackTroop[Ubound($barrackTroop) + 2]
+		For $i = 4 To 5 ;Covers all 2 dark Barracks
+			$barrackTroop[$i] = IniRead($configMilk, "troop", "troop" & $i + 1, "0")
+		Next
+
 	
 EndFunc 
 
@@ -237,6 +246,10 @@ Func applyconfigMilk()
 		GUICtrlSetState($chkAttIfDB, $GUI_UNCHECKED)
 	EndIf
 	GUICtrlSetData($txtAttIfDB, $iPercentThsn)
+	
+  _GUICtrlComboBox_SetCurSel($cmbBarrack5, $barrackTroop[4])
+  _GUICtrlComboBox_SetCurSel($cmbBarrack6, $barrackTroop[5])
+
 
 EndFunc
 
