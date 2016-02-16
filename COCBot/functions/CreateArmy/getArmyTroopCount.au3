@@ -180,7 +180,7 @@ Func getArmyTroopCount($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 					$TroopName = "Minions"
 					$aDTtroopsToBeUsed[5][1] = $Troops[2]
 					If $FirstStart Or $fullArmy Or IsTroopToDonateOnly($eMini) Then
-						$CurMini = 90 ;-($TroopQ) ; noyax to solve pb of minions cooking
+						$CurMini = -($TroopQ)
 						$SlotInArmyMini = $i - 1
 					EndIf
 
