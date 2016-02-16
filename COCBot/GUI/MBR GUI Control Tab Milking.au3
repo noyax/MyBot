@@ -270,3 +270,94 @@ Func chkCoCStats()
 EndIf
 IniWrite($configMilk, "Stats", "chkCoCStats",$ichkCoCStats)
 EndFunc ;==> chkCoCStats
+
+
+; #FUNCTION# ====================================================================================================================
+; Name ..........: TrainDarkTroopsBarrackMode
+; Description ...: Train the dark troops (Fill the barracks) in barrack mode
+; Syntax ........: TrainDarkTroopsBarrackMode()
+; Parameters ....:
+; Return values .: None
+; Author ........: MereDoku
+; Modified ......: 
+; Remarks .......:
+; Related .......:
+; Link ..........: 
+; Example .......: No
+; ===============================================================================================================================
+Func TrainDarkTroopsBarrackMode()
+
+		If $debugSetlog = 1 Then
+			Setlog("", $COLOR_PURPLE)
+			SetLog("---------TRAIN DARK TROOP IN BARRACK MODE------------------------", $COLOR_PURPLE)
+		EndIf
+		
+		;Move to the first dark barrack
+		$iBarrHere = 0
+		$brrDarkNum = 0
+		While isDarkBarrack() = False
+			If Not (IsTrainPage()) Then Return
+			_TrainMoveBtn(+1) ;click Next button
+			$iBarrHere += 1
+			If _Sleep($iDelayTrain3) Then Return
+			If (isDarkBarrack() Or $iBarrHere = 8) Then ExitLoop
+		WEnd
+		
+		If _Sleep($iDelayTrain2) Then Return
+		
+		;For each dark barrack, train the choosen dark troops
+		While isDarkBarrack()
+			$brrDarkNum += 1
+			If $debugSetlog = 1 Then SetLog("====== Checking available Dark Barrack: " & $brrDarkNum & " ======", $COLOR_PURPLE)
+
+			If ($fullarmy = True) Or $FirstStart Then ; Delete Troops That is being trained
+				$icount = 0
+				If _ColorCheck(_GetPixelColor(187, 212, True), Hex(0xD30005, 6), 10) Then ; check if the existe more then 6 slots troops on train bar
+					While Not _ColorCheck(_GetPixelColor(573, 212, True), Hex(0xD80001, 6), 10) ; while until appears the Red icon to delete troops
+						_PostMessage_ClickDrag(550, 240, 170, 240, "left", 1000)
+						$icount += 1
+						If _Sleep($iDelayTrain1) Then Return
+						If $icount = 7 Then ExitLoop
+					WEnd
+				EndIf
+				$icount = 0
+				While Not _ColorCheck(_GetPixelColor(599, 202 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
+					If Not (IsTrainPage()) Then Return ;exit if no train page
+					Click(568, 177 + $midOffsetY, 10, 0, "#0287") ; Remove Troops in training
+					$icount += 1
+					If $icount = 100 Then ExitLoop
+				WEnd
+				If $debugSetlog = 1 And $icount = 100 Then SetLog("Train warning 9", $COLOR_PURPLE)
+			EndIf
+
+			If _Sleep($iDelayTrain1) Then ExitLoop
+			
+			If Not (IsTrainPage()) Then Return ; exit from train if no train page
+			;SetLog("$barrackTroop[$brrDarkNum + 3] = " & $barrackTroop[$brrDarkNum + 3])			
+			
+			Switch $barrackTroop[$brrDarkNum + 3]
+				Case 1
+					TrainIt($eMini, 45)
+				Case 2
+					TrainIt($eHogs, 18)
+				Case 3
+					TrainIt($eValk, 11)
+				Case 4
+					TrainIt($eGole, 3)
+				Case 5
+					TrainIt($eWitc, 7)
+				Case 6
+					TrainIt($eLava, 3)				
+			EndSwitch
+
+			If _Sleep($iDelayTrain2) Then ExitLoop
+			If Not (IsTrainPage()) Then Return
+			If $brrDarkNum >= $numDarkBarracksAvaiables Then ExitLoop ; make sure no more infiniti loop
+			_TrainMoveBtn(+1) ;click Next button
+			If _Sleep($iDelayTrain3) Then ExitLoop
+
+		WEnd
+		
+EndFunc   ;==>TrainDarkTroopsBarrackMode		
+
+	
