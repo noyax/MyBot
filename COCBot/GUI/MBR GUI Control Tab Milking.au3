@@ -179,10 +179,6 @@ Func readconfigMilk()
 	$iOptAttIfDB = IniRead($configMilk, "TH Snipe", "THsnAttIfDB", "1")
 	$iPercentThsn = IniRead($configMilk, "TH Snipe", "THsnPercent", "10")
 
-		For $i = 0 To UBound($TroopDarkName) - 1
-			Assign($TroopDarkName[$i] & "Comp", IniRead($configMilk, "troop", $TroopDarkName[$i], "0"))
-		Next
-	
 		ReDim $barrackTroop[Ubound($barrackTroop) + 2]
 		For $i = 4 To 5 ;Covers all 2 dark Barracks
 			$barrackTroop[$i] = IniRead($configMilk, "troop", "troop" & $i + 1, "0")
