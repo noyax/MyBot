@@ -402,8 +402,6 @@ Func TestLoots($Gold1 = 0, $Elixir1 = 0)
 		EndIf
 		$TestLoots = True
 		$iMatchMode = $DB
-		Global $PixelRedArea[0]
-		_ArrayAdd($PixelRedArea, $PixelRedArea2)
 		PrepareAttack($iMatchMode)
 		If $Restart = True Then 
 			$TestLoots = False

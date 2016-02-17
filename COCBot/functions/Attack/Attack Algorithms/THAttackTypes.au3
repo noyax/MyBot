@@ -371,7 +371,9 @@ Func AttackTHParseCSV($test = False)
 	$hBitmapFirst = _CaptureRegion2()
 	_GetRedArea()
 	Global $PixelRedArea2[0]
+	Global $PixelRedAreaFurther2[0]
 	_ArrayAdd($PixelRedArea2, $PixelRedArea)
+	_ArrayAdd($PixelRedAreaFurther2, $PixelRedAreaFurther)
 	Local $Gold1 = getGoldVillageSearch(48, 69)
 	Local $Elixir1 = getElixirVillageSearch(48, 69 + 29)
 	Local $isTownHallDestroy = False

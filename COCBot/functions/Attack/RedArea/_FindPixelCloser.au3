@@ -97,7 +97,8 @@ Func _GetPixelCloserDistance($arrPixelCloser, $pixel)
 		$DistancePixeltoPixCLoser = Sqrt(($tmpPixelCloser[0]-$pixel[0])^2 + ($tmpPixelCloser[1] - $pixel[1])^2)
 		SetLog("Distance = " & Int($DistancePixeltoPixCLoser) & "; Collector (" & $pixel[0] & "," & $pixel[1] & "); RedLine Pixel Closer (" & $tmpPixelCloser[0] & "," & $tmpPixelCloser[1] & ")", $COLOR_BLUE)
 	EndIf
-
+	global $tmplistInfoPixelDropTroop[0]
+	_ArrayAdd($tmplistInfoPixelDropTroop, $tmpPixelCloser)
 	Return $DistancePixeltoPixCLoser
 EndFunc   ;==>_GetPixelCloserDistance
 

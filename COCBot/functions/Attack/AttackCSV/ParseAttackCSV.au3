@@ -60,7 +60,12 @@ Func ParseAttackCSV($debug = False)
 						Local $hTimerTOTAL = TimerInit()
 						; REDAREA -----------------------------------------------------------------------------------------------------------------------------------------
 						Local $hTimer = TimerInit()
-						If $TestLoots = False then
+						If $TestLoots then
+							Global $PixelRedArea[0]
+							_ArrayAdd($PixelRedArea, $PixelRedArea2)
+							Global $PixelRedAreaFurther[0]
+							_ArrayAdd($PixelRedAreaFurther, $PixelRedAreaFurther2)
+						Else
 							_WinAPI_DeleteObject($hBitmapFirst)
 							$hBitmapFirst = _CaptureRegion2()
 							_GetRedArea()
