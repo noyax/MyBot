@@ -1,7 +1,7 @@
 V3.0.3
 - Add modif of @LKhjks to attack TH exposed in csv
 - Add train dark troops
-
+- Add function to attack base when loots in th snipe < X % (I think 10% is a good choise)
 
 
 v3.0.2

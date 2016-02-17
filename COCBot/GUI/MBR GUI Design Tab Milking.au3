@@ -93,7 +93,7 @@ $tabMilking = GUICtrlCreateTabItem("Milking")
 		$picMilkAttackNearDarkElixirDrill = GUICtrlCreateIcon($pIconLib, $eIcnDrill, $x + 250 , $y - 3, 24, 24)
  			GUICtrlSetTip(-1, $txtTip)
 		$y += 40
-		$lblnew = GUICtrlCreateLabel("****** Option TH Snipe. Not active now, it's for future update *******", $x , $y + 3)
+		$lblnew = GUICtrlCreateLabel("****** Option TH Snipe *******", $x , $y + 3)
 		$y += 23
 		$chkAttIfDB = GUICtrlCreateCheckbox("Attack if loots <", $x  , $y, -1, -1)
 			$txtTip = "Attack if TH Snipe found dead base"

@@ -364,6 +364,19 @@ EndFunc   ;==>SwitchAttackTHType
 Func AttackTHParseCSV($test = False)
 	If $debugsetlog = 1 Then Setlog("AttackTHParseCSV start", $COLOR_PURPLE)
 	Local $f, $line, $acommand, $command
+
+	;Noyax top
+	setlog ("Get red area")
+	_WinAPI_DeleteObject($hBitmapFirst)
+	$hBitmapFirst = _CaptureRegion2()
+	_GetRedArea()
+	Global $PixelRedArea2[0]
+	_ArrayAdd($PixelRedArea2, $PixelRedArea)
+	Local $Gold1 = getGoldVillageSearch(48, 69)
+	Local $Elixir1 = getElixirVillageSearch(48, 69 + 29)
+	Local $isTownHallDestroy = False
+	;Noyax bottom
+
 	If FileExists($dirTHSnipesAttacks & "\" & $scmbAttackTHType & ".csv") Then
 		$f = FileOpen($dirTHSnipesAttacks & "\" & $scmbAttackTHType & ".csv", 0)
 		; Read in lines of text until the EOF is reached
@@ -412,7 +425,10 @@ Func AttackTHParseCSV($test = False)
 					Case $command = "WAIT"
 						If $debugSetLog = 1 Then Setlog(">> GoldElixirChangeThSnipes(" & Int($acommand[7]) & ") ")
 
-						If CheckOneStar(Int($acommand[7]) / 2000) Then ExitLoop ; Use seconds not ms , Half of time to check One start and the other halft for check the Resources
+						If CheckOneStar(Int($acommand[7]) / 2000) Then ;Noyax ExitLoop ; Use seconds not ms , Half of time to check One start and the other halft for check the Resources
+							$isTownHallDestroy = true ;Noyax
+							ExitLoop ;Noyax
+						EndIf ;Noyax
 						GoldElixirChangeThSnipes(Int($acommand[7]) / 2000) ; Correct the Function GoldElixirChangeThSnipes uses seconds not ms
 
 					Case StringInStr(StringUpper("-King-Queen-Castle-"), "-" & $command & "-") > 0
@@ -441,12 +457,18 @@ Func AttackTHParseCSV($test = False)
 				If StringStripWS($acommand[1], 2) <> "" Then Setlog("attack row error, discard: " & $line, $COLOR_RED)
 			EndIf
 			If $debugSetLog = 1 Then Setlog(">> CheckOneStar()")
-			If CheckOneStar() Then ExitLoop
+			If CheckOneStar() Then
+				setlog ("TH Destroy...")
+				$isTownHallDestroy = true
+				ExitLoop
+			EndIf
 		WEnd
 		FileClose($f)
 	Else
 		SetLog("Cannot found THSnipe attack file " & $dirTHSnipesAttacks & "\" & $scmbAttackTHType & ".csv", $color_red)
 	EndIf
+
+	If $isTownHallDestroy = true Then TestLoots($Gold1, $Elixir1) ;Noyax
 
 EndFunc   ;==>AttackTHParseCSV
 

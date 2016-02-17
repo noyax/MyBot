@@ -60,9 +60,11 @@ Func ParseAttackCSV($debug = False)
 						Local $hTimerTOTAL = TimerInit()
 						; REDAREA -----------------------------------------------------------------------------------------------------------------------------------------
 						Local $hTimer = TimerInit()
-						_WinAPI_DeleteObject($hBitmapFirst)
-						$hBitmapFirst = _CaptureRegion2()
-						_GetRedArea()
+						If $TestLoots = False then
+							_WinAPI_DeleteObject($hBitmapFirst)
+							$hBitmapFirst = _CaptureRegion2()
+							_GetRedArea()
+						EndIf
 						Local $htimerREDAREA = Round(TimerDiff($hTimer) / 1000, 2)
 						debugAttackCSV("Calculated  (in " & $htimerREDAREA & " seconds) :")
 						debugAttackCSV("	[" & UBound($PixelTopLeft) & "] pixels TopLeft")

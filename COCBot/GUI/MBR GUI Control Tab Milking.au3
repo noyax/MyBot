@@ -56,6 +56,11 @@ Global $ichkCoCStats = 0
 Global $stxtAPIKey = ""
 Global $MyApiKey = ""
 
+; TH Snipe
+Global $PixelRedArea2[0]
+Global $PixelRedAreaFurther2[0]
+Global $TestLoots = False
+
 Func milkingatt()
 	If GUICtrlRead($chkDBAttMilk) = $GUI_CHECKED Then
 		GUICtrlSetState($txtchkPixelmaxExposed, $GUI_ENABLE)
@@ -147,6 +152,7 @@ Func saveparamMilk()
 	EndIf
 	IniWrite($configMilk, "TH Snipe", "THsnPercent", GUICtrlRead($txtAttIfDB))
 
+;train dark troops
 	IniWrite($configMilk, "troop", "troop5", _GUICtrlComboBox_GetCurSel($cmbBarrack5))
 	IniWrite($configMilk, "troop", "troop6", _GUICtrlComboBox_GetCurSel($cmbBarrack6))  
 	
@@ -179,10 +185,11 @@ Func readconfigMilk()
 	$iOptAttIfDB = IniRead($configMilk, "TH Snipe", "THsnAttIfDB", "1")
 	$iPercentThsn = IniRead($configMilk, "TH Snipe", "THsnPercent", "10")
 
-		ReDim $barrackTroop[Ubound($barrackTroop) + 2]
-		For $i = 4 To 5 ;Covers all 2 dark Barracks
-			$barrackTroop[$i] = IniRead($configMilk, "troop", "troop" & $i + 1, "0")
-		Next
+;train dark troops
+	ReDim $barrackTroop[Ubound($barrackTroop) + 2]
+	For $i = 4 To 5 ;Covers all 2 dark Barracks
+		$barrackTroop[$i] = IniRead($configMilk, "troop", "troop" & $i + 1, "0")
+	Next
 
 	
 EndFunc 
@@ -360,4 +367,53 @@ Func TrainDarkTroopsBarrackMode()
 		
 EndFunc   ;==>TrainDarkTroopsBarrackMode		
 
+; #FUNCTION# ====================================================================================================================
+; Name ..........: TestLoots
+; Description ...: test loot when Th fall
+; Syntax ........: 
+; Parameters ....: 
+; Return values .: 
+; Author ........: Noyax37 
+; Modified ......:
+; Remarks .......: This file is part of MyBot Copyright 2015
+;                  MyBot is distributed under the terms of the GNU GPL
+; Related .......:
+; Example .......: 
+; ===============================================================================================================================
+Func TestLoots($Gold1 = 0, $Elixir1 = 0)
+
+	Local $Gold2 = getGoldVillageSearch(48, 69)
+	Local $Elixir2 = getElixirVillageSearch(48, 69 + 29)
+	Local $Ggold = 0
+	$Ggold = $Gold1 - $Gold2
+	Local $Gelixir = 0
+	$Gelixir = $Elixir1 - $Elixir2
+	Setlog ("Gold loots = " & $Gold1 & " - " & $Gold2 & " = " & $Ggold)
+	Setlog ("% Gold = 100 * " & $Ggold & " / " & $Gold1 & " = " & Round(100 * $Ggold / $Gold1, 1))
+	Setlog ("Elixir loots = " & $Elixir1 & " - " & $Elixir2 & " = " & $Gelixir)
+	Setlog ("% Elixir = 100 * " & $Gelixir & " / " & $Elixir1 & " = " & Round(100 * $Gelixir / $Elixir1, 1))
+	If Round(100 * $Ggold / $Gold1, 1) < $iPercentThsn Or Round(100 * $Gelixir / $Elixir1, 1) < $iPercentThsn Then 
+		Setlog ("Go to attack this dead base")
+		If $zoomedin = True Then
+			ZoomOut()
+			$zoomedin = False
+			$zCount = 0
+			$sCount = 0
+		EndIf
+		$TestLoots = True
+		$iMatchMode = $DB
+		Global $PixelRedArea[0]
+		_ArrayAdd($PixelRedArea, $PixelRedArea2)
+		PrepareAttack($iMatchMode)
+		If $Restart = True Then 
+			$TestLoots = False
+			$iMatchMode = $TS
+			Return
+		EndIf
+		Attack()
+		$TestLoots = False
+		$iMatchMode = $TS
+		Return
+	EndIf
 	
+EndFunc
