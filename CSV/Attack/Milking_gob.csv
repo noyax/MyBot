@@ -26,6 +26,7 @@ DROP  |Q          |3          |1          |king       |0          |0          |1
 DROP  |R          |8          |1          |castle     |0          |0          |500-1000   |           |launch Castle                                                     castle
 DROP  |R          |3          |1          |queen      |0          |0          |100-500    |           |launch Queen                                                      queen
 DROP  |R          |3          |1          |Warden     |0          |0          |0          |           |launch Grand Warden                                               queen
+WAIT  |20000-25000|           |           |           |           |           |           |           |Add a wait time; during wait time also CHECK exit values (exit if no resource left, exit if one or two starts reach)
       |                                                                                               |
       |---------------------------------- Milking with Gobelins end-----------------------------------|
 
