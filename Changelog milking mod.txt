@@ -1,3 +1,6 @@
+v3.0.4
+
+
 V3.0.3
 - Add modif of @LKhjks to attack TH exposed in csv
 - Add train dark troops
