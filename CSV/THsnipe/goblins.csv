@@ -3,4 +3,4 @@ Text  |  |  |  |  |     |     |--Attack with goblins--                          
 Text  |  |  |  |  |     |     |Wave1: Gobs and wait 25 seconds                                     |
 Gobl  | 4| 4| 1| 1| 1500| 2000|                                                                    |deploys 4 spot x 1 qty of gobs
 Text  |  |  |  |  |     |     |~Finished Attacking, waiting to finish                              |
-WAIT  |  |  |  |  |     |30000|                                                                    |
+WAIT  |  |  |  |  |     |35000|                                                                    |
