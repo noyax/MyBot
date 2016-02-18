@@ -56,6 +56,11 @@ Global $ichkCoCStats = 0
 Global $stxtAPIKey = ""
 Global $MyApiKey = ""
 
+; TH Snipe
+Global $PixelRedArea2[0]
+Global $PixelRedAreaFurther2[0]
+Global $TestLoots = False
+
 Func milkingatt()
 	If GUICtrlRead($chkDBAttMilk) = $GUI_CHECKED Then
 		GUICtrlSetState($txtchkPixelmaxExposed, $GUI_ENABLE)
@@ -146,6 +151,10 @@ Func saveparamMilk()
 		IniWrite($configMilk, "TH Snipe", "THsnAttIfDB", 0)
 	EndIf
 	IniWrite($configMilk, "TH Snipe", "THsnPercent", GUICtrlRead($txtAttIfDB))
+
+;train dark troops
+	IniWrite($configMilk, "troop", "troop5", _GUICtrlComboBox_GetCurSel($cmbBarrack5))
+	IniWrite($configMilk, "troop", "troop6", _GUICtrlComboBox_GetCurSel($cmbBarrack6))  
 	
 EndFunc
 
@@ -175,6 +184,13 @@ Func readconfigMilk()
 ;TH Snipe
 	$iOptAttIfDB = IniRead($configMilk, "TH Snipe", "THsnAttIfDB", "1")
 	$iPercentThsn = IniRead($configMilk, "TH Snipe", "THsnPercent", "10")
+
+;train dark troops
+	ReDim $barrackTroop[Ubound($barrackTroop) + 2]
+	For $i = 4 To 5 ;Covers all 2 dark Barracks
+		$barrackTroop[$i] = IniRead($configMilk, "troop", "troop" & $i + 1, "0")
+	Next
+
 	
 EndFunc 
 
@@ -237,6 +253,10 @@ Func applyconfigMilk()
 		GUICtrlSetState($chkAttIfDB, $GUI_UNCHECKED)
 	EndIf
 	GUICtrlSetData($txtAttIfDB, $iPercentThsn)
+	
+  _GUICtrlComboBox_SetCurSel($cmbBarrack5, $barrackTroop[4])
+  _GUICtrlComboBox_SetCurSel($cmbBarrack6, $barrackTroop[5])
+
 
 EndFunc
 
@@ -257,3 +277,141 @@ Func chkCoCStats()
 EndIf
 IniWrite($configMilk, "Stats", "chkCoCStats",$ichkCoCStats)
 EndFunc ;==> chkCoCStats
+
+
+; #FUNCTION# ====================================================================================================================
+; Name ..........: TrainDarkTroopsBarrackMode
+; Description ...: Train the dark troops (Fill the barracks) in barrack mode
+; Syntax ........: TrainDarkTroopsBarrackMode()
+; Parameters ....:
+; Return values .: None
+; Author ........: MereDoku
+; Modified ......: 
+; Remarks .......:
+; Related .......:
+; Link ..........: 
+; Example .......: No
+; ===============================================================================================================================
+Func TrainDarkTroopsBarrackMode()
+
+		If $debugSetlog = 1 Then
+			Setlog("", $COLOR_PURPLE)
+			SetLog("---------TRAIN DARK TROOP IN BARRACK MODE------------------------", $COLOR_PURPLE)
+		EndIf
+		
+		;Move to the first dark barrack
+		$iBarrHere = 0
+		$brrDarkNum = 0
+		While isDarkBarrack() = False
+			If Not (IsTrainPage()) Then Return
+			_TrainMoveBtn(+1) ;click Next button
+			$iBarrHere += 1
+			If _Sleep($iDelayTrain3) Then Return
+			If (isDarkBarrack() Or $iBarrHere = 8) Then ExitLoop
+		WEnd
+		
+		If _Sleep($iDelayTrain2) Then Return
+		
+		;For each dark barrack, train the choosen dark troops
+		While isDarkBarrack()
+			$brrDarkNum += 1
+			If $debugSetlog = 1 Then SetLog("====== Checking available Dark Barrack: " & $brrDarkNum & " ======", $COLOR_PURPLE)
+
+			If ($fullarmy = True) Or $FirstStart Then ; Delete Troops That is being trained
+				$icount = 0
+				If _ColorCheck(_GetPixelColor(187, 212, True), Hex(0xD30005, 6), 10) Then ; check if the existe more then 6 slots troops on train bar
+					While Not _ColorCheck(_GetPixelColor(573, 212, True), Hex(0xD80001, 6), 10) ; while until appears the Red icon to delete troops
+						_PostMessage_ClickDrag(550, 240, 170, 240, "left", 1000)
+						$icount += 1
+						If _Sleep($iDelayTrain1) Then Return
+						If $icount = 7 Then ExitLoop
+					WEnd
+				EndIf
+				$icount = 0
+				While Not _ColorCheck(_GetPixelColor(599, 202 + $midOffsetY, True), Hex(0xD0D0C0, 6), 20) ; while not disappears  green arrow
+					If Not (IsTrainPage()) Then Return ;exit if no train page
+					Click(568, 177 + $midOffsetY, 10, 0, "#0287") ; Remove Troops in training
+					$icount += 1
+					If $icount = 100 Then ExitLoop
+				WEnd
+				If $debugSetlog = 1 And $icount = 100 Then SetLog("Train warning 9", $COLOR_PURPLE)
+			EndIf
+
+			If _Sleep($iDelayTrain1) Then ExitLoop
+			
+			If Not (IsTrainPage()) Then Return ; exit from train if no train page
+			;SetLog("$barrackTroop[$brrDarkNum + 3] = " & $barrackTroop[$brrDarkNum + 3])			
+			
+			Switch $barrackTroop[$brrDarkNum + 3]
+				Case 1
+					TrainIt($eMini, 45)
+				Case 2
+					TrainIt($eHogs, 18)
+				Case 3
+					TrainIt($eValk, 11)
+				Case 4
+					TrainIt($eGole, 3)
+				Case 5
+					TrainIt($eWitc, 7)
+				Case 6
+					TrainIt($eLava, 3)				
+			EndSwitch
+
+			If _Sleep($iDelayTrain2) Then ExitLoop
+			If Not (IsTrainPage()) Then Return
+			If $brrDarkNum >= $numDarkBarracksAvaiables Then ExitLoop ; make sure no more infiniti loop
+			_TrainMoveBtn(+1) ;click Next button
+			If _Sleep($iDelayTrain3) Then ExitLoop
+
+		WEnd
+		
+EndFunc   ;==>TrainDarkTroopsBarrackMode		
+
+; #FUNCTION# ====================================================================================================================
+; Name ..........: TestLoots
+; Description ...: test loot when Th fall
+; Syntax ........: 
+; Parameters ....: 
+; Return values .: 
+; Author ........: Noyax37 
+; Modified ......:
+; Remarks .......: This file is part of MyBot Copyright 2015
+;                  MyBot is distributed under the terms of the GNU GPL
+; Related .......:
+; Example .......: 
+; ===============================================================================================================================
+Func TestLoots($Gold1 = 0, $Elixir1 = 0)
+
+	Local $Gold2 = getGoldVillageSearch(48, 69)
+	Local $Elixir2 = getElixirVillageSearch(48, 69 + 29)
+	Local $Ggold = 0
+	$Ggold = $Gold1 - $Gold2
+	Local $Gelixir = 0
+	$Gelixir = $Elixir1 - $Elixir2
+	Setlog ("Gold loots = " & $Gold1 & " - " & $Gold2 & " = " & $Ggold)
+	Setlog ("% Gold = 100 * " & $Ggold & " / " & $Gold1 & " = " & Round(100 * $Ggold / $Gold1, 1))
+	Setlog ("Elixir loots = " & $Elixir1 & " - " & $Elixir2 & " = " & $Gelixir)
+	Setlog ("% Elixir = 100 * " & $Gelixir & " / " & $Elixir1 & " = " & Round(100 * $Gelixir / $Elixir1, 1))
+	If Round(100 * $Ggold / $Gold1, 1) < $iPercentThsn Or Round(100 * $Gelixir / $Elixir1, 1) < $iPercentThsn Then 
+		Setlog ("Go to attack this dead base")
+		If $zoomedin = True Then
+			ZoomOut()
+			$zoomedin = False
+			$zCount = 0
+			$sCount = 0
+		EndIf
+		$TestLoots = True
+		$iMatchMode = $DB
+		PrepareAttack($iMatchMode)
+		If $Restart = True Then 
+			$TestLoots = False
+			$iMatchMode = $TS
+			Return
+		EndIf
+		Attack()
+		$TestLoots = False
+		$iMatchMode = $TS
+		Return
+	EndIf
+	
+EndFunc

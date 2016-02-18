@@ -56,11 +56,11 @@ $tabMilking = GUICtrlCreateTabItem("Milking")
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetLimit(-1, 3)
 			_GUICtrlEdit_SetReadOnly(-1, False)
-		$y += 23
-		$lblPixelmaxExposed2 = GUICtrlCreateLabel("Nb pixels between center of collector to the redline, higher is this number", $x - 5 , $y )
-		$y += 23
-		$lblPixelmaxExposed2 = GUICtrlCreateLabel(" more chance you have to fail attack. 25 seems to be the minimum but too strict. 40 seems good result.", $x - 5 , $y )
-		$y += 40
+;		$y += 23
+;		$lblPixelmaxExposed2 = GUICtrlCreateLabel("Nb pixels between center of collector to the redline, higher is this number", $x - 5 , $y )
+;		$y += 23
+;		$lblPixelmaxExposed2 = GUICtrlCreateLabel(" more chance you have to fail attack. 25 seems to be the minimum but too strict. 40 seems good result.", $x - 5 , $y )
+		$y += 30
 		$lblnew = GUICtrlCreateLabel("****** New method, inactivates if scripted attack is chosen. It's for future update *******", $x , $y + 3)
 		$y += 23
 		$lblPixelmaxExposed = GUICtrlCreateLabel("Nb tiles to redline to consider exposed:", $x - 5 , $y )
@@ -76,24 +76,24 @@ $tabMilking = GUICtrlCreateTabItem("Milking")
 			GUICtrlSetLimit(-1, 3)
 			_GUICtrlEdit_SetReadOnly(-1, False)
 		$lblUseForColl2 = GUICtrlCreateLabel("Gobs / collectors" , $x + 30, $y, -1, -1)
-		$y += 26
-		$chkMilkAttackNearGoldMine = GUICtrlCreateCheckbox("", $x + 20, $y, 17, 17)
+;		$y += 26
+		$chkMilkAttackNearGoldMine = GUICtrlCreateCheckbox("", $x + 120, $y, 17, 17)
 			$txtTip = GetTranslated(3,37, "Drop troops near Gold Mines")
 			GUICtrlSetTip(-1, $txtTip)
-		$picMilkAttackNearGoldMine = GUICtrlCreateIcon($pIconLib, $eIcnMine, $x + 40 , $y - 3 , 24, 24)
+		$picMilkAttackNearGoldMine = GUICtrlCreateIcon($pIconLib, $eIcnMine, $x + 140 , $y - 3 , 24, 24)
 			GUICtrlSetTip(-1, $txtTip)
-		$chkMilkAttackNearElixirCollector = GUICtrlCreateCheckbox("", $x + 75, $y, 17, 17)
+		$chkMilkAttackNearElixirCollector = GUICtrlCreateCheckbox("", $x + 175, $y, 17, 17)
 			$txtTip = GetTranslated(3,38, "Drop troops near Elixir Collectors")
 			GUICtrlSetTip(-1, $txtTip)
-		$picMilkAttackNearElixirCollector = GUICtrlCreateIcon($pIconLib, $eIcnCollector, $x + 95 , $y - 3 , 24, 24)
+		$picMilkAttackNearElixirCollector = GUICtrlCreateIcon($pIconLib, $eIcnCollector, $x + 195 , $y - 3 , 24, 24)
 			GUICtrlSetTip(-1, $txtTip)
-  		$chkMilkAttackNearDarkElixirDrill = GUICtrlCreateCheckbox("", $x + 130, $y, 17, 17)
+  		$chkMilkAttackNearDarkElixirDrill = GUICtrlCreateCheckbox("", $x + 230, $y, 17, 17)
 			$txtTip = GetTranslated(3,39, "Drop troops near Dark Elixir Drills")
  			GUICtrlSetTip(-1, $txtTip)
-		$picMilkAttackNearDarkElixirDrill = GUICtrlCreateIcon($pIconLib, $eIcnDrill, $x + 150 , $y - 3, 24, 24)
+		$picMilkAttackNearDarkElixirDrill = GUICtrlCreateIcon($pIconLib, $eIcnDrill, $x + 250 , $y - 3, 24, 24)
  			GUICtrlSetTip(-1, $txtTip)
 		$y += 40
-		$lblnew = GUICtrlCreateLabel("****** Option TH Snipe. Not active now, it's for future update *******", $x , $y + 3)
+		$lblnew = GUICtrlCreateLabel("****** Option TH Snipe *******", $x , $y + 3)
 		$y += 23
 		$chkAttIfDB = GUICtrlCreateCheckbox("Attack if loots <", $x  , $y, -1, -1)
 			$txtTip = "Attack if TH Snipe found dead base"
@@ -105,6 +105,19 @@ $tabMilking = GUICtrlCreateTabItem("Milking")
 			GUICtrlSetTip(-1, $txtTip)
 			GUICtrlSetLimit(-1, 2)
 			GUICtrlSetState(-1, $GUI_ENABLE)
+		$y += 30
+		$lblnew = GUICtrlCreateLabel("****** Train troop in dark barracks *******", $x , $y + 3)
+		$y += 23
+		$lblBarrack5 = GUICtrlCreateLabel("5:", $x - 5, $y, -1, -1)
+		$cmbBarrack5 = GUICtrlCreateCombo("", $x + 10, $y, 100, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetTip(-1, $txtTip & " 5.")
+			GUICtrlSetData(-1, "-----------|" & $sTxtMinions & "|" & $sTxtHogRiders & "|" & $sTxtValkyries & "|" & $sTxtGolems & "|" & $sTxtWitches & "|" & $sTxtLavaHounds, "-----------")
+			GUICtrlSetState(-1, $GUI_DISABLE)      
+		$lblBarrack6 = GUICtrlCreateLabel("6:", $x +140, $y, -1, -1)
+		$cmbBarrack6 = GUICtrlCreateCombo("", $x + 155, $y, 100, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetTip(-1, $txtTip & " 6.")
+			GUICtrlSetData(-1, "-----------|" & $sTxtMinions & "|" & $sTxtHogRiders & "|" & $sTxtValkyries & "|" & $sTxtGolems & "|" & $sTxtWitches & "|" & $sTxtLavaHounds, "-----------")
+			GUICtrlSetState(-1, $GUI_DISABLE)         
 
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 GUICtrlCreateTabItem("")

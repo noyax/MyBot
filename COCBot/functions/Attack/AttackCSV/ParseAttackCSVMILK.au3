@@ -24,6 +24,7 @@ Func ParseAttackCSVMILK($value1 = "M", $value2 = 1, $value3 = 6, $value4 = "gobl
 ;			Local $NbPixelmaxExposed = 40 ; à changer avec la config
 			local $troopMilk1, $troopMilk2, $tempo, $value13, $value14, $troopsmilk
 ;			$troopMilk = Eval("e" & $value4)
+			Local $listInfoPixelDropTroop[0]
 			
 			If stringlen($value4) > 5 then
 				$tempo = StringSplit($value4, "-")
@@ -48,8 +49,7 @@ Func ParseAttackCSVMILK($value1 = "M", $value2 = 1, $value3 = 6, $value4 = "gobl
 						Local $arrPixelsCloser = _FindPixelCloser($PixelRedArea, $pixelTemp, 1, False)
 						Local $tmpDist = _GetPixelCloserDistance($arrPixelsCloser, $pixelTemp)
 						If $tmpDist > 0 And $tmpDist < Number($NbPixelmaxExposed2) Then
-;							DropOnPixel($troopMilk, $arrPixelsCloser, Number($value3), 1)	
-;							OldDropTroop2($troopMilk, $arrPixelsCloser, Number($value3))
+;							_ArrayAdd($listInfoPixelDropTroop, $tmplistInfoPixelDropTroop)
 							Local $tmpArrayOfPixel[1]
 							$tmpArrayOfPixel[0] = $pixelTemp
 							_ArrayAdd($PixelMineToAttack, $tmpArrayOfPixel)
@@ -66,9 +66,10 @@ Func ParseAttackCSVMILK($value1 = "M", $value2 = 1, $value3 = 6, $value4 = "gobl
 				If (IsArray($PixelElixir) And (UBound($PixelElixir)>0) ) Then
 					For $i = 0 To UBound($PixelElixir) - 1
 						Local $pixelTemp = $PixelElixir[$i]
-						Local $arrPixelsCloser = _FindPixelCloser($PixelRedArea, $pixelTemp, 1, True)
+						Local $arrPixelsCloser = _FindPixelCloser($PixelRedArea, $pixelTemp, 1, False)
 						Local $tmpDist = _GetPixelCloserDistance($arrPixelsCloser, $pixelTemp)
 						If $tmpDist > 0 And $tmpDist < Number($NbPixelmaxExposed2) Then
+;							_ArrayAdd($listInfoPixelDropTroop, $tmplistInfoPixelDropTroop)
 							Local $tmpArrayOfPixel[1]
 							$tmpArrayOfPixel[0] = $pixelTemp
 							_ArrayAdd($PixelElixirToAttack, $tmpArrayOfPixel)
@@ -85,9 +86,10 @@ Func ParseAttackCSVMILK($value1 = "M", $value2 = 1, $value3 = 6, $value4 = "gobl
 				If (IsArray($PixelDarkElixir) And (UBound($PixelDarkElixir)>0) ) Then
 					For $i = 0 To UBound($PixelDarkElixir) - 1
 						Local $pixelTemp = $PixelDarkElixir[$i]
-						Local $arrPixelsCloser = _FindPixelCloser($PixelRedArea, $pixelTemp, 1, True)
+						Local $arrPixelsCloser = _FindPixelCloser($PixelRedArea, $pixelTemp, 1, False)
 						Local $tmpDist = _GetPixelCloserDistance($arrPixelsCloser, $pixelTemp)
 						If $tmpDist > 0 And $tmpDist < Number($NbPixelmaxExposed2) Then
+;							_ArrayAdd($listInfoPixelDropTroop, $tmplistInfoPixelDropTroop)
 							Local $tmpArrayOfPixel[1]
 							$tmpArrayOfPixel[0] = $pixelTemp
 							_ArrayAdd($PixelDarkElixirToAttack, $tmpArrayOfPixel)
@@ -99,15 +101,17 @@ Func ParseAttackCSVMILK($value1 = "M", $value2 = 1, $value3 = 6, $value4 = "gobl
 				$iNbrOfDetectedDrills[$iMatchMode] += UBound($PixelDarkElixir)
 			EndIf
 ; +++++++++++++legion123 new code
-			If ($value1 = "TH") Then
+			If ($value1 = "TH") and ($TestLoots = False) Then
+				THSearch() ;thanks to @LKhjks
 				SetLog("Get Location of TH...")
 				Local $tmpArrayOfPixel[1]
 
 						Local $pixelTemp =  StringSplit($thx & "-" & $thy, "-", 2)
 
-						Local $arrPixelsCloser = _FindPixelCloser($PixelRedArea, $pixelTemp, 1, True)
+						Local $arrPixelsCloser = _FindPixelCloser($PixelRedArea, $pixelTemp, 1, False)
 						Local $tmpDist = _GetPixelCloserDistance($arrPixelsCloser, $pixelTemp)
 						If $tmpDist > 0 And $tmpDist < Number($NbPixelmaxExposed2) Then
+;							_ArrayAdd($listInfoPixelDropTroop, $tmplistInfoPixelDropTroop)
 							$tmpArrayOfPixel[0] = $pixelTemp
 							_ArrayAdd($PixelNearCollector, $tmpArrayOfPixel)
 							SetLog("Attacking TH")
@@ -136,9 +140,9 @@ Func ParseAttackCSVMILK($value1 = "M", $value2 = 1, $value3 = 6, $value4 = "gobl
 ;			If $HDVOutDB = 1 Then AttackTHGrid ($eGobl, 4, 1, 2000, 1) ; noyax attack hdv out in db
 ;			$HDVOutDB = 0
 			Local $listEdgesPixelToDrop[0]
-			Local $listInfoPixelDropTroop[0]
 			Local $nbTroopsPerEdge = Number($value3)
 ;			If ($number > 0 And $nbTroopsPerEdge = 0) Then $nbTroopsPerEdge = 1
+;#cs
 			Local $maxElementNearCollector = UBound($PixelNearCollector) - 1
 			Local $startIndex = 0
 			Local $troopFurther = False
@@ -179,7 +183,7 @@ Func ParseAttackCSVMILK($value1 = "M", $value2 = 1, $value3 = 6, $value4 = "gobl
 				$listInfoPixelDropTroop[UBound($listInfoPixelDropTroop) - 1] = _FindPixelCloser($arrPixelToSearch, $pixel, 1)
 
 			Next
-
+;#ce
 ;			$listInfoDeployTroopPixel[UBound($listInfoDeployTroopPixel) - 1] = $infoDropTroop
 ;			setlog(" $troopMilk = " & $troopMilk)
 
